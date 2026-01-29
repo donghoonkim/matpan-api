@@ -18,38 +18,52 @@
 
 ## 프로젝트 설명
 
+
 [Nest](https://github.com/nestjs/nest) 프레임워크 TypeScript 스타터 리포지토리입니다.
+
+## 주요 기능 및 변경 사항 (Key Features & Updates)
+
+현재 프로젝트에 구현된 주요 기능과 설정입니다.
+
+- **패키지 관리**: `npm`에서 **`yarn`**으로 마이그레이션 완료 (2026-01-30)
+- **데이터베이스**: **Neon PostgreSQL** 연동 (TypeORM)
+  - `admin` -> `TB_ADMIN` 테이블명 변경 및 CRUD 구현
+- **API 문서**: Swagger 자동 생성 (/api-docs)
+  - 문서 및 API 설명 한글화(영문 병기) 적용
+- **UI 개선**: 루트 경로(`/`) 접속 시 HTML 랜딩 페이지 제공
+- **보안**: `.env` 환경 변수 관리 및 불필요한 결제 관련 링크 제거
 
 ## 프로젝트 설정
 
+
 ```bash
-$ npm install
+$ yarn install
 ```
 
 ## 앱 실행
 
 ```bash
 # 개발 모드 (development)
-$ npm run start
+$ yarn start
 
 # 워치 모드 (watch mode)
-$ npm run start:dev
+$ yarn start:dev
 
 # 프로덕션 모드 (production mode)
-$ npm run start:prod
+$ yarn start:prod
 ```
 
 ## 테스트
 
 ```bash
 # 단위 테스트 (unit tests)
-$ npm run test
+$ yarn test
 
 # e2e 테스트 (e2e tests)
-$ npm run test:e2e
+$ yarn test:e2e
 
 # 테스트 커버리지 (test coverage)
-$ npm run test:cov
+$ yarn test:cov
 ```
 
 ## 빠른 시작 및 테스트 (Quick Start)
@@ -59,13 +73,13 @@ $ npm run test:cov
 ### 1. 설치 (Installation)
 패키지 의존성을 설치합니다.
 ```bash
-$ npm install
+$ yarn install
 ```
 
 ### 2. 실행 (Running)
 API 서버를 실행합니다.
 ```bash
-$ npm run start
+$ yarn start
 ```
 서버가 정상적으로 실행되면 `http://localhost:3000` 포트에서 대기합니다.
 

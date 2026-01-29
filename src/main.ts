@@ -1,13 +1,15 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { ValidationPipe } from '@nestjs/common';
+import { ValidationPipe, RequestMethod } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   // Global Prefix
-  app.setGlobalPrefix('api');
+  app.setGlobalPrefix('api', {
+    exclude: [{ path: '/', method: RequestMethod.GET }],
+  });
 
   // Validation Pipe
   app.useGlobalPipes(
@@ -20,8 +22,8 @@ async function bootstrap() {
 
   // Swagger Setup
   const config = new DocumentBuilder()
-    .setTitle('Matpan API')
-    .setDescription('The Matpan API description')
+    .setTitle('Matpan API (맛판 API)')
+    .setDescription('Matpan 서비스 API 명세서입니다.')
     .setVersion('1.0')
     .build();
   const document = SwaggerModule.createDocument(app, config);
