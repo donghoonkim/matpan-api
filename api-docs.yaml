@@ -1,0 +1,322 @@
+openapi: 3.0.0
+info:
+  title: Matpan API (맛판 API)
+  description: Matpan 서비스 API 명세서입니다.
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000
+    description: Local Development Server
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+          example: 400
+        message:
+          type: string
+          example: Bad Request
+        error:
+          type: string
+          example: Bad Request
+
+    LoginAdminDto:
+      type: object
+      required:
+        - admin_id
+        - password
+      properties:
+        admin_id:
+          type: string
+          minLength: 8
+          maxLength: 30
+          description: 운영자 아이디
+          example: admin123
+        password:
+          type: string
+          description: 비밀번호
+          example: securePassword!@#
+
+    CreateAdminDto:
+      type: object
+      required:
+        - admin_id
+        - password
+        - name
+        - phone
+        - email
+      properties:
+        admin_id:
+          type: string
+          minLength: 8
+          maxLength: 30
+          description: 운영자 아이디
+          example: admin123
+        password:
+          type: string
+          minLength: 8
+          maxLength: 255
+          description: 비밀번호
+          example: securePassword!@#
+        name:
+          type: string
+          maxLength: 50
+          description: 담당자명
+          example: 홍길동
+        phone:
+          type: string
+          maxLength: 20
+          description: 전화번호
+          example: 010-1234-5678
+        email:
+          type: string
+          maxLength: 100
+          description: 이메일
+          example: admin@matpan.com
+        position:
+          type: string
+          maxLength: 50
+          description: 직위
+          example: 최고관리자
+        permission_settings:
+          type: object
+          description: 권한 설정
+          example: { "posts": "read-write", "users": "read" }
+
+    UpdateAdminDto:
+      type: object
+      properties:
+        password:
+          type: string
+          minLength: 8
+          maxLength: 255
+        name:
+          type: string
+          maxLength: 50
+        phone:
+          type: string
+          maxLength: 20
+        email:
+          type: string
+          maxLength: 100
+        position:
+          type: string
+          maxLength: 50
+        permission_settings:
+          type: object
+
+    CreatePostDto:
+      type: object
+      required:
+        - title
+        - content
+      properties:
+        title:
+          type: string
+          description: 제목
+          example: My First Post
+        content:
+          type: string
+          description: 내용
+          example: Hello World
+
+    UpdatePostDto:
+      type: object
+      properties:
+        title:
+          type: string
+        content:
+          type: string
+
+paths:
+  /api/admins/login:
+    post:
+      summary: 운영자 로그인 (Login)
+      tags:
+        - 운영자 (Admins)
+      description: ID/PW로 로그인하여 JWT 토큰을 발급받습니다. (과도한 시도 시 제한됨)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginAdminDto'
+      responses:
+        '201':
+          description: 로그인 성공 및 JWT 발급
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  access_token:
+                    type: string
+                    example: eyJhbGciOiJIUzI1Ni...
+        '401':
+          description: 인증 실패 (ID/PW 불일치)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: 요청 횟수 초과 (Rate Limit)
+
+  /api/admins:
+    get:
+      summary: 운영자 전체 조회 (Find All Admins)
+      tags:
+        - 운영자 (Admins)
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: 성공
+    post:
+      summary: 운영자 생성 (Create Admin)
+      tags:
+        - 운영자 (Admins)
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAdminDto'
+      responses:
+        '201':
+          description: 생성 성공
+        '400':
+          description: 유효성 검사 실패
+
+  /api/admins/{id}:
+    get:
+      summary: 운영자 상세 조회 (Find One Admin)
+      tags:
+        - 운영자 (Admins)
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 성공
+        '404':
+          description: 운영자 없음
+    patch:
+      summary: 운영자 정보 수정 (Update Admin)
+      tags:
+        - 운영자 (Admins)
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAdminDto'
+      responses:
+        '200':
+          description: 수정 성공
+    delete:
+      summary: 운영자 삭제 (Delete Admin)
+      tags:
+        - 운영자 (Admins)
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 삭제 성공
+
+  /api/posts:
+    get:
+      summary: 게시글 전체 조회 (Find All Posts)
+      tags:
+        - 게시글 (Posts)
+      responses:
+        '200':
+          description: 성공
+    post:
+      summary: 게시글 생성 (Create Post)
+      tags:
+        - 게시글 (Posts)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePostDto'
+      responses:
+        '201':
+          description: 생성 성공
+
+  /api/posts/{id}:
+    get:
+      summary: 게시글 상세 조회 (Find One Post)
+      tags:
+        - 게시글 (Posts)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 성공
+    patch:
+      summary: 게시글 수정 (Update Post)
+      tags:
+        - 게시글 (Posts)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePostDto'
+      responses:
+        '200':
+          description: 수정 성공
+    delete:
+      summary: 게시글 삭제 (Delete Post)
+      tags:
+        - 게시글 (Posts)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 삭제 성공

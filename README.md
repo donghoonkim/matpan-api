@@ -28,8 +28,12 @@
 - **패키지 관리**: `npm`에서 **`yarn`**으로 마이그레이션 완료 (2026-01-30)
 - **데이터베이스**: **Neon PostgreSQL** 연동 (TypeORM)
   - `admin` -> `TB_ADMIN` 테이블명 변경 및 CRUD 구현
+- **보안**: 
+  - 관리자 로그인 시스템 구현 (bcrypt 암호화, JWT 인증, Rate Limiting)
+  - `.env` 환경 변수 관리 및 불필요한 결제 관련 링크 제거
 - **API 문서**: Swagger 자동 생성 (/api-docs)
   - 문서 및 API 설명 한글화(영문 병기) 적용
+  - `api-docs.yaml` 파일로 OpenAPI 3.0 명세 제공
 - **UI 개선**: 루트 경로(`/`) 접속 시 HTML 랜딩 페이지 제공
 - **보안**: `.env` 환경 변수 관리 및 불필요한 결제 관련 링크 제거
 
