@@ -38,3 +38,15 @@ lerna-debug.log*
 
 # nestjs
 dist/
+
+# Security & Misc
+*.pem
+*.key
+*.cert
+*.p12
+*.crl
+*.der
+Thumbs.db
+*.log
+*.sqlite
+*.db

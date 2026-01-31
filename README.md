@@ -31,6 +31,7 @@
 - **보안**: 
   - 관리자 로그인 시스템 구현 (bcrypt 암호화, JWT 인증, Rate Limiting)
   - `.env` 환경 변수 관리 및 불필요한 결제 관련 링크 제거
+  - 리포지토리 보안 설정 (`.gitignore` 강화, `.env.example` 제공)
 - **API 문서**: Swagger 자동 생성 (/api-docs)
   - 문서 및 API 설명 한글화(영문 병기) 적용
   - `api-docs.yaml` 파일로 OpenAPI 3.0 명세 제공
