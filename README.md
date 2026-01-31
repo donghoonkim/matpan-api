@@ -36,7 +36,10 @@
   - 문서 및 API 설명 한글화(영문 병기) 적용
   - `api-docs.yaml` 파일로 OpenAPI 3.0 명세 제공
 - **UI 개선**: 루트 경로(`/`) 접속 시 HTML 랜딩 페이지 제공
-- **보안**: `.env` 환경 변수 관리 및 불필요한 결제 관련 링크 제거
+- **보안**: 
+  - 관리자 로그인 시스템 구현 (bcrypt 암호화, JWT 인증, Rate Limiting)
+  - `.env` 환경 변수 관리 및 불필요한 결제 관련 링크 제거
+  - 리포지토리 보안 설정 (`.gitignore` 강화, `.env.example` 제공)
 
 ## 프로젝트 설정
 
@@ -76,9 +79,10 @@ $ yarn test:cov
 프로젝트를 설치하고 주요 기능을 빠르게 테스트하는 방법입니다.
 
 ### 1. 설치 (Installation)
-패키지 의존성을 설치합니다.
+패키지 의존성을 설치하고 환경 변수를 설정합니다.
 ```bash
-$ yarn install
+$ cp .env.example .env  # 환경 변수 템플릿 복사
+$ yarn install          # 의존성 설치
 ```
 
 ### 2. 실행 (Running)
